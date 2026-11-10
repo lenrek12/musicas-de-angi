@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Angi ❤️</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: linear-gradient(135deg, #160823 0%, #3d0a1c 55%, #571231 100%);
+            background-attachment: fixed;
+            color: #ffe4ec;
+            font-family: Georgia, 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        #hearts { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+        .heart {
+            position: absolute;
+            color: #ff5c8a;
+            opacity: 0;
+            animation: floatUp linear infinite;
+            text-shadow: 0 0 12px rgba(255, 92, 138, 0.8);
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(30vh) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-95vh) scale(1.3) rotate(20deg); opacity: 0; }
+        }
+        .card {
+            background: rgba(40, 10, 28, 0.72);
+            border: 1px solid rgba(255, 107, 157, 0.4);
+            border-radius: 24px;
+            max-width: 600px;
+            width: 100%;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.65), 0 0 60px rgba(255, 92, 138, 0.15);
+            backdrop-filter: blur(8px);
+            position: relative;
+            z-index: 1;
+        }
+        .header { text-align: center; border-bottom: 1px solid rgba(255, 107, 157, 0.3); padding-bottom: 18px; margin-bottom: 22px; }
+        .header h1 { color: #ff6b9d; font-size: 2rem; margin-bottom: 6px; }
+        .header p { color: #f7b8cf; font-style: italic; font-size: 0.95rem; }
+        .content { line-height: 1.85; font-size: 1.08rem; color: #ffe4ec; }
+        .content p { margin-bottom: 18px; }
+        .content .highlight { color: #ff9ec7; font-weight: bold; }
+        .content h3 { color: #ff8fb3; margin: 22px 0 10px; font-size: 1.25rem; }
+        .content p strong { color: #ff9ec7; }
+        .footer { margin-top: 30px; border-top: 1px solid rgba(255, 107, 157, 0.3); padding-top: 18px; text-align: center; color: #e8a9bf; font-size: 0.9rem; font-style: italic; }
+        .button-container { display: flex; justify-content: center; margin-top: 22px; }
+        .copy-btn {
+            background: linear-gradient(135deg, #ff4d7e, #ff7a59);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(255, 77, 126, 0.4);
+        }
+        .copy-btn:hover { transform: scale(1.05); box-shadow: 0 8px 26px rgba(255, 77, 126, 0.6); }
+        .music-options { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .music-btn { background: rgba(255, 255, 255, 0.08); color: #ffe4ec; border: 1px solid rgba(255, 107, 157, 0.5); padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 0.95rem; font-family: inherit; transition: all 0.2s; }
+        .music-btn:hover { background: rgba(255, 107, 157, 0.35); transform: scale(1.05); }
+        @media (max-width: 480px) { .card { padding: 22px; } }
+    </style>
+</head>
+<body>
+
+    <div id="hearts"></div>
+    <audio id="cancion1" src="https://raw.githubusercontent.com/lenrek12/musicas-de-angi/main/musica1.mp3" autoplay muted playsinline webkit-playsinline preload="auto"></audio>
+    <audio id="cancion2" src="https://raw.githubusercontent.com/lenrek12/musicas-de-angi/main/musica2.mp3" muted playsinline webkit-playsinline preload="auto"></audio>
+
+    <div class="card">
+        <div class="header">
+            <h1>Para Angi ❤️</h1>
+            <p>De parte de Albert</p>
+        </div>
+
+        <div class="music-options">
+            <button class="music-btn" id="btnMusica1">🎵 musica1</button>
+            <button class="music-btn" id="btnMusica2">🎵 musica2</button>
+        </div>
+
+        <div class="content" id="mensaje">
+            <p>Hay canciones que trascienden el tiempo, melodías que de repente empiezan a sonar en la mente y parecen contar exactamente la historia que uno lleva dentro del pecho. Cuando escucho esa versión clásica de 1963 de "You Are My Destiny", con esa cadencia suave, nostálgica y sincera, no puedo evitar pensar en ti, en nosotros, en este camino que hemos recorrido y en todo lo que representas en mi vida. Al igual que dice la letra de esa canción, siento con cada fibra de mi ser que tú eres mi destino, el lugar al que pertenecen mis pensamientos y la persona con la que quiero construir cada uno de los días que tengo por delante.</p>
+            <p>Te escribo estas palabras con el corazón en la mano, tomándome todo el tiempo necesario para ordenar mis pensamientos, mis emociones y todo lo que quiero expresarte. No quiero hacerlo con la prisa de un mensaje de texto rápido que se escribe y se borra en segundos, sino con la calma, la profundidad y la honestidad absoluta que tú te mereces. Sé perfectamente que en este momento las cosas entre nosotros están tensas, que hay dolor acumulado, frustración, palabras que se dijeron a medias y silencios que pesan demasiado en el ambiente. Pero precisamente por todo lo que significas para mí, porque te amo de verdad y porque valoro de forma inmensa lo que hemos construido juntos, necesito abrirte mi mente y mi alma sin reservas, sin defensas y sin intentar imponerte nada.</p>
+
+            <h3>El peso de los errores y el valor de pedir perdón</h3>
+            <p>Lo primero y más importante que necesito hacer en este momento es pedirte una disculpa profunda, sincera y desprovista de cualquier justificación vacía. Perdóname, Angi. Perdóname si te agobié, si fui demasiado intenso, si insistí en momentos equivocados y si con mis actitudes o mis palabras, en lugar de darme paz y refugio, te causé más agobio y cansancio mental. Sé que cuando una persona está atravesando un momento difícil, cuando siente que el mundo le pesa o que las cosas no salen como esperaba, lo último que necesita es presión, reclamos o exigencias sobre cómo debe sentirse o actuar.</p>
+            <p>A mí me gana muchas veces el miedo. El miedo terrible a perderte, a que la distancia emocional crezca, a que este lazo tan especial que tenemos se rompa y no saber cómo sostenerlo. Pero entiendo perfectamente que mi miedo no justifica mis errores. No estuvo bien de mi parte presionarte con temas de noviazgo o con etiquetas en un instante donde tú solo necesitabas desahogarte, sentirte escuchada y estar en paz contigo misma. Te pido perdón por no haber sabido leer mejor tu silencio o tu dolor, y por haber puesto mis propias ansiedades e inseguridades por delante de tu bienestar en ese preciso momento.</p>
+
+            <h3>Tu valor absoluto frente al dolor del mundo</h3>
+            <p>Me dolió muchísimo, en lo más profundo del alma, leer cómo te sentías, ver tus mensajes y darme cuenta del nivel de agotamiento emocional y hartazgo con que cargas. Es desgarrador leer frases donde cuestionas tu propio valor o donde expresas esa frustración tan grande con respecto a cómo sientes que la gente se acerca a ti. Ver que experimentas esa sensación de que las personas solo buscan cosas superficiales o físicas, y que te duele profundamente pensar en cuánta ropa tienes que quitarte o entregar físicamente para que alguien te ame o te preste atención, me parte el corazón en mil pedazos.</p>
+            <p>Quiero decirte esto con absoluta claridad, mirándote a los ojos si los tuviéramos frente a frente: tú vales infinitamente más que cualquier aspecto físico. A mí me importas tú, tu esencia, tus risas, tus días grises, tus enojos, tu inteligencia, tus miedos y tu forma única de ver la vida. No necesito que cambies absolutamente nada de ti, no necesito que demuestres nada ante nadie y, sobre todo, no necesito que te sientas obligada a cumplir ninguna expectativa superficial para que yo te valore. Te quiero por la persona que eres cuando estamos bien y cuando estamos mal, por la complicidad que hemos construido y por todo lo que compartimos como seres humanos. El amor real, el único que vale la pena, no depende de lo físico ni de exigencias vacías; es un afecto genuino que abraza tanto tus virtudes como tus momentos de mayor vulnerabilidad y tristeza.</p>
+
+            <h3>No hay nadie en este mundo como tú: La melodía que resuena en mi alma</h3>
