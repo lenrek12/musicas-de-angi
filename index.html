@@ -66,10 +66,11 @@
             font-weight: bold;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 6px 20px rgba(255, 77, 126, 0.4);
+            touch-action: manipulation;
         }
         .copy-btn:hover { transform: scale(1.05); box-shadow: 0 8px 26px rgba(255, 77, 126, 0.6); }
         .music-options { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
-        .music-btn { background: rgba(255, 255, 255, 0.08); color: #ffe4ec; border: 1px solid rgba(255, 107, 157, 0.5); padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 0.95rem; font-family: inherit; transition: all 0.2s; }
+        .music-btn { background: rgba(255, 255, 255, 0.08); color: #ffe4ec; border: 1px solid rgba(255, 107, 157, 0.5); padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 0.95rem; font-family: inherit; transition: all 0.2s; touch-action: manipulation; }
         .music-btn:hover { background: rgba(255, 107, 157, 0.35); transform: scale(1.05); }
         @media (max-width: 480px) { .card { padding: 22px; } }
     </style>
@@ -161,6 +162,7 @@
         }
 
         // ====== MÚSICA Y TEMÁTICAS (control manual: solo suenan con los botones) ======
+        // v4: red de seguridad — es IMPOSIBLE que suenen las 2 a la vez
         const audios = [
             document.getElementById('cancion1'),
             document.getElementById('cancion2')
@@ -194,33 +196,52 @@
             });
         }
 
-        audios.forEach(a => {
-            a.addEventListener('play', actualizarBotones);
+        // RED DE SEGURIDAD: en el momento en que UNA canción empieza a sonar,
+        // se corta y se reinicia la otra. Así jamás suenan las dos juntas.
+        audios.forEach((a, i) => {
+            a.addEventListener('play', () => {
+                audios.forEach((b, j) => {
+                    if (j !== i && !b.paused) {
+                        b.pause();
+                        try { b.currentTime = 0; } catch (e) {}
+                    }
+                });
+                actualizarBotones();
+            });
             a.addEventListener('pause', actualizarBotones);
             a.addEventListener('ended', actualizarBotones);
         });
+
+        function pararTodasMenos(i) {
+            audios.forEach((b, j) => {
+                if (j !== i && !b.paused) {
+                    b.pause();
+                    try { b.currentTime = 0; } catch (e) {}
+                }
+            });
+        }
 
         function toggleCancion(i) {
             const a = audios[i];
             // Si esta canción está sonando → se pausa
             if (!a.paused) {
                 a.pause();
+                actualizarBotones();
                 return;
             }
-            // Si la otra canción está sonando → se corta y se reinicia
-            const otra = audios[1 - i];
-            if (!otra.paused) {
-                otra.pause();
-                otra.currentTime = 0;
-            }
+            // Por seguridad: la otra canción se corta por completo
+            pararTodasMenos(i);
             // Si terminó o nunca empezó → comienza desde cero (y cambia el tema)
             if (a.ended || a.currentTime === 0) {
-                a.currentTime = 0;
+                try { a.currentTime = 0; } catch (e) {}
                 aplicarTema(inicios % 4);
                 inicios++;
             }
             // Si estaba pausada a mitad → continúa donde quedó
-            a.play().catch(() => {});
+            a.play().then(() => {
+                pararTodasMenos(i); // doble verificación al empezar
+                actualizarBotones();
+            }).catch(() => {});
             actualizarBotones();
         }
 
