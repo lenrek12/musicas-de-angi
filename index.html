@@ -77,8 +77,8 @@
 <body>
 
     <div id="hearts"></div>
-    <audio id="cancion1" src="musica1.mp3" autoplay muted playsinline webkit-playsinline preload="auto"></audio>
-    <audio id="cancion2" src="musica2.mp3" muted playsinline webkit-playsinline preload="auto"></audio>
+    <audio id="cancion1" src="musica1.mp3" preload="auto"></audio>
+    <audio id="cancion2" src="musica2.mp3" preload="auto"></audio>
 
     <div class="card">
         <div class="header">
@@ -160,10 +160,14 @@
             }).catch(err => console.error('Error al copiar: ', err));
         }
 
-        // ====== MÚSICA Y TEMÁTICAS ======
+        // ====== MÚSICA Y TEMÁTICAS (control manual: solo suenan con los botones) ======
         const audios = [
             document.getElementById('cancion1'),
             document.getElementById('cancion2')
+        ];
+        const botones = [
+            document.getElementById('btnMusica1'),
+            document.getElementById('btnMusica2')
         ];
         const temas = [
             { bg: 'linear-gradient(135deg, #2b0505, #4d0a0a)', color: '#ffe0e0', cardBg: 'rgba(43,5,5,0.78)', acento: '#e63946' },
@@ -171,8 +175,7 @@
             { bg: 'linear-gradient(135deg, #2b1a05, #4a2c07)', color: '#ffe9c9', cardBg: 'rgba(43,26,5,0.78)', acento: '#d4a017' },
             { bg: 'linear-gradient(135deg, #2b0505, #4d0a0a)', color: '#ffe0e0', cardBg: 'rgba(43,5,5,0.78)', acento: '#e63946' }
         ];
-        let playIndex = 0;
-        const secuencia = [audios[0], audios[1], audios[0], audios[1]];
+        let inicios = 0; // cuántas veces se inició una canción desde cero (para el tema)
 
         function aplicarTema(i) {
             const t = temas[i];
@@ -183,37 +186,47 @@
             card.style.borderColor = t.acento;
         }
 
-        function reproducir(el) {
-            el.currentTime = 0;
-            el.muted = true;
-            el.play().then(() => { el.muted = false; }).catch(() => {});
-        }
+        aplicarTema(0); // tema inicial rojo
 
-        function siguiente() {
-            reproducir(secuencia[playIndex]);
-            aplicarTema(playIndex);
-            playIndex++;
-        }
-
-        document.getElementById('cancion1').addEventListener('ended', () => {
-            if (playIndex < 4) siguiente();
-        });
-        document.getElementById('cancion2').addEventListener('ended', () => {
-            if (playIndex < 4) siguiente();
-        });
-
-        document.getElementById('btnMusica1').addEventListener('click', () => reproducir(audios[0]));
-        document.getElementById('btnMusica2').addEventListener('click', () => reproducir(audios[1]));
-
-        siguiente();
-
-        // Fallback: con la primera interacción del usuario se desmutea y se reproduce (por si el navegador bloquea el autoplay con sonido, ej: movil)
-        document.addEventListener('click', () => {
-            audios.forEach(a => {
-                a.muted = false;
-                if (a.paused) { a.play().catch(() => {}); }
+        function actualizarBotones() {
+            audios.forEach((a, i) => {
+                botones[i].textContent = a.paused ? '🎵 musica' + (i + 1) : '⏸️ musica' + (i + 1);
             });
-        }, { once: true });
+        }
+
+        audios.forEach(a => {
+            a.addEventListener('play', actualizarBotones);
+            a.addEventListener('pause', actualizarBotones);
+            a.addEventListener('ended', actualizarBotones);
+        });
+
+        function toggleCancion(i) {
+            const a = audios[i];
+            // Si esta canción está sonando → se pausa
+            if (!a.paused) {
+                a.pause();
+                return;
+            }
+            // Si la otra canción está sonando → se corta y se reinicia
+            const otra = audios[1 - i];
+            if (!otra.paused) {
+                otra.pause();
+                otra.currentTime = 0;
+            }
+            // Si terminó o nunca empezó → comienza desde cero (y cambia el tema)
+            if (a.ended || a.currentTime === 0) {
+                a.currentTime = 0;
+                aplicarTema(inicios % 4);
+                inicios++;
+            }
+            // Si estaba pausada a mitad → continúa donde quedó
+            a.play().catch(() => {});
+            actualizarBotones();
+        }
+
+        document.getElementById('btnMusica1').addEventListener('click', () => toggleCancion(0));
+        document.getElementById('btnMusica2').addEventListener('click', () => toggleCancion(1));
+        actualizarBotones();
     </script>
 </body>
 </html>
